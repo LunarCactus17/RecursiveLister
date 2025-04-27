@@ -14,71 +14,67 @@ public class RecursiveLister extends JFrame {
     private JLabel titleLabel;
 
     public RecursiveLister() {
-        setTitle("Recursive File Lister"); // Set the title of the JFrame
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Ensure the application closes on window close
-        setSize(600, 400); // Set a decent size for the window
-        setLocationRelativeTo(null); // Center the window on the screen
-        setLayout(new BorderLayout()); // Use BorderLayout for better organization
+        setTitle("Recursive File Lister");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(600, 400);
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
 
-        // Create GUI components
-        titleLabel = new JLabel("File Lister", SwingConstants.CENTER); // Title at the top
+        titleLabel = new JLabel("File Lister", SwingConstants.CENTER);
         fileTextArea = new JTextArea();
-        scrollPane = new JScrollPane(fileTextArea); // Wrap the JTextArea in a JScrollPane
+        scrollPane = new JScrollPane(fileTextArea);
         startButton = new JButton("Start");
         quitButton = new JButton("Quit");
-
-        // Add components to the JFrame
         add(titleLabel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
 
-        JPanel buttonPanel = new JPanel(); // Panel for buttons to keep them together
+        JPanel buttonPanel = new JPanel();
         buttonPanel.add(startButton);
         buttonPanel.add(quitButton);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // Add ActionListener to the Start button
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); // Only allow directory selection
-                int result = fileChooser.showOpenDialog(RecursiveLister.this); // Open the file chooser
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                int result = fileChooser.showOpenDialog(RecursiveLister.this);
 
                 if (result == JFileChooser.APPROVE_OPTION) {
                     File selectedDirectory = fileChooser.getSelectedFile();
-                    fileTextArea.setText(""); // Clear previous text
-                    listFilesRecursive(selectedDirectory); // Start the recursive listing
+                    fileTextArea.setText("");
+                    listFilesRecursive(selectedDirectory);
                 }
             }
         });
 
-        // Add ActionListener to the Quit button
+
         quitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.exit(0); // Exit the application
+                System.exit(0);
             }
         });
 
-        setVisible(true); // Make the JFrame visible
+        setVisible(true);
     }
 
     private void listFilesRecursive(File directory) {
-        File[] files = directory.listFiles(); // Get all files and directories in the current directory
+        File[] files = directory.listFiles();
         if (files != null) {
             for (File file : files) {
-                fileTextArea.append(file.getAbsolutePath() + "\n"); // Display the file path
+                fileTextArea.append(file.getAbsolutePath() + "\n");
                 if (file.isDirectory()) {
-                    listFilesRecursive(file); // Recursive call for subdirectories
+                    listFilesRecursive(file);
                 }
             }
         }
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() { // Use SwingUtilities.invokeLater for thread safety
+        SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new RecursiveLister(); // Create and display the GUI
+                new RecursiveLister();
             }
         });
     }
